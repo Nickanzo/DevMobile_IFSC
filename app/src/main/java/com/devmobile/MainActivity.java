@@ -14,6 +14,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
 // Variaveis para Sorteio de numero entre intervalo
     int min, max, res=0;
@@ -38,15 +40,17 @@ public class MainActivity extends AppCompatActivity {
                if (validaEntrada(inicio.getText().toString().trim(),
                         fim.getText().toString().trim())){
                // Busca os valores inseridos na tela
-                   min = Integer.parseInt(inicio.toString());
-                   max = Integer.parseInt(fim.toString());
+                   min = Integer.parseInt(inicio.getText().toString());
+                   max = Integer.parseInt(fim.getText().toString());
                // Verifica se o intervalo esta correto
                    if (min > max){
                        txt.setText("Inicio do intervalo maior ao fim do intervalo");
-                       txt.setTextColor(Color.parseColor("#FF00000"));
                    }else{
-
-                   }
+                        Random r = new Random();
+                        res = r.nextInt(max - min + 1) + min;
+                        txt.setText("Numero sorteado: " + res);                   }
+               }else{
+                   txt.setText("Inserir um intervalo valido !");
                }
             }
         });
