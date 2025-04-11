@@ -9,6 +9,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.github.skydoves.colorpicker.compose.ColorPickerController;
+
 public class MainActivity extends AppCompatActivity {
 
     Button buttonClear;
@@ -22,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
         buttonClear=findViewById(R.id.buttonClear);
         simplePaint=findViewById(R.id.simplePaint);
 
-        //buttonClear.setOnClickListener(v -> );
+        buttonClear.setOnClickListener(v -> {
+
+        });
     }
 }
