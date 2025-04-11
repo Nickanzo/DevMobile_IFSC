@@ -30,6 +30,8 @@ public class CustomButton extends androidx.appcompat.widget.AppCompatButton {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        float btInicio=this.getX();
+
         Log.d("Coordenadas" , "X: " + Float.toString(event.getRawX())
         + " Y: " + Float.toString(event.getRawY()));
 
@@ -38,13 +40,22 @@ public class CustomButton extends androidx.appcompat.widget.AppCompatButton {
             case (MotionEvent.ACTION_DOWN):
                 inicioX = event.getRawX();
             case (MotionEvent.ACTION_MOVE):
+                float delta=event.getRawX() - btInicio;
+                this.setX(delta+btInicio);
+                float normalized = Math.max(-1f, Math.min(1f, delta / getWidth()));
                 if(inicioX>event.getRawX()){
                     this.setBackgroundColor(Color.GREEN);
                 }
                 if(inicioX<event.getRawX()){
                     this.setBackgroundColor(Color.RED);
                 }
+                return true;
+            case (MotionEvent.ACTION_UP):
+                this.setBackgroundColor(Color.GRAY);
+                this.setX(btInicio);
             default:
+                this.setBackgroundColor(Color.GRAY);
+                this.setX(btInicio);
         }
         return true;
     }
