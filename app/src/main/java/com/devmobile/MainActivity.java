@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         sqldb.execSQL("CREATE TABLE IF NOT EXISTS notas (id INTEGER PRIMARY KEY AUTOINCREMENT , titulo TEXT, conteudo TEXT)");
 
-        //cv.put("id", 1);
+        cv = new ContentValues();
         cv.put("titulo", "Nota 1");
         cv.put("conteudo", "Conteudo da nota 1");
 
@@ -49,13 +50,14 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));
             @SuppressLint("Range") String titulo = cursor.getString(cursor.getColumnIndex("titulo"));
             @SuppressLint("Range") String conteudo = cursor.getString(cursor.getColumnIndex("conteudo"));
+            listaQuery.add("id: " + Integer.toString(id) + " titulo "+  titulo + " conteudo: " + conteudo);
 
             cursor.moveToNext();
             Log.d("SELECT notas" , "id: " + id + " titulo: " + titulo + " conteudo: " + conteudo);
-            listaQuery.add("id: " + Integer.toString(id) + " titulo "+  titulo + " conteudo: " + conteudo);
 
         };
 
-
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listaQuery);
+        listView.setAdapter(adapter);
     }
 }
