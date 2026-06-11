@@ -1,17 +1,22 @@
 package com.devmobile;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 public class notaController {
 
     private notaDAO notaDAO;
 
-    public void inserirNovaNota(nota n){
+    public notaController(Context context) {
+        notaDAO = new notaDAO(context);
+    }
 
+    public void inserirNovaNota(nota n){
+        notaDAO.insereNota(n);
     }
 
     public boolean deleteNota(int id){
-
 
         return false;
     }
@@ -24,10 +29,20 @@ public class notaController {
 
     public nota getNota(int i){
 
+        return notaDAO.getNota(i);
 
-        return null;
+    }
 
+    public ArrayList<String> listaTitulosNotas(){
 
+        ArrayList<nota> notas = this.listarNotas();
+        ArrayList<String > titulosNotas = new ArrayList<>();
+
+        for( nota n : notas ){
+            titulosNotas.add(n.titulo);
+        }
+
+        return titulosNotas;
     }
 
 
