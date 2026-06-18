@@ -39,8 +39,9 @@
         android:layout_width="40sp"
         android:layout_height="40sp"
         android:layout_alignParentEnd="true"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:id="@+id/flipCamera"/>
+        android:text="@string/switch_camera"
+        android:id="@+id/flipCamera"
+        tools:ignore="MissingConstraints" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/vertical_centerline"

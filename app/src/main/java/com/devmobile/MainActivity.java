@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -33,6 +34,7 @@ import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.PermissionChecker;
+import androidx.core.util.Consumer;
 
 import com.devmobile.databinding.ActivityMainBinding;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     PreviewView previewView;
 
+    private CameraSelector cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA;
+
     private ActivityMainBinding viewBinding;
 
     private ImageCapture imageCapture = null;
@@ -59,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
     private Recording recording = null;
 
     private ExecutorService cameraExecutor;
+
+    Button trocaCamera = findViewById(R.id.flipCamera);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         //findViewById(R.id.image_capture_button).setOnClickListener(v -> takePhoto());
         findViewById(R.id.video_capture_button).setOnClickListener(v -> toggleVideo());
+        findViewById(R.id.flipCamera).setOnClickListener(view -> trocaCamera());
 
         cameraExecutor = Executors.newSingleThreadExecutor();
     }
@@ -117,7 +124,32 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void trocaCamera(){
+
+        cameraSelector = cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA
+                ? CameraSelector.DEFAULT_FRONT_CAMERA
+                : CameraSelector.DEFAULT_BACK_CAMERA;
+        if (cameraProviderFuture != null) {
+            try {
+                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+                bindUseCases(cameraProvider);
+            } catch (Exception e) {
+                Toast.makeText(this, R.string.photo_error, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    }
+
+    private void bindUseCases(ProcessCameraProvider cameraProvider) {
+        Preview preview = new Preview.Builder().build();
+        preview.setSurfaceProvider(previewView.getSurfaceProvider());
+        imageCapture = new ImageCapture.Builder().build();
+        cameraProvider.unbindAll();
+        cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture);
+    }
+
     private void toggleVideo(){
+
 
 
     }
